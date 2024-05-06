@@ -32,11 +32,17 @@ public class MInAndMax {
     }
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis(); // Record start time
+
         int[] arr = {3, 10, 6, 8, 12, 7, 15, 5, 9, 14};
 
         Pair result = findMinMax(arr, 0, arr.length - 1);
 
         System.out.println("Minimum element: " + result.min);
         System.out.println("Maximum element: " + result.max);
+
+        long endTime = System.currentTimeMillis(); // Record end time
+        long executionTime = endTime - startTime; // Calculate execution time
+        System.out.println("Execution Time: " + executionTime + " milliseconds");
     }
 }

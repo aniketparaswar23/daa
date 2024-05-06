@@ -31,11 +31,25 @@ public class AssemblyLineScheduling {
     }
 
     public static void main(String[] args) {
+        // Record the start time in nanoseconds
+        long startTime = System.nanoTime();
+
         int[][] a = {{4, 5, 3, 2}, {2, 10, 1, 4}};
         int[][] t = {{0, 7, 4, 5}, {0, 9, 2, 8}};
         int[] e = {10, 12};
         int[] x = {18, 7};
 
-        System.out.println("Minimum time: " + carAssembly(a, t, e, x));
+        // Calculate the minimum time
+        int minTime = carAssembly(a, t, e, x);
+
+        // Record the end time in nanoseconds
+        long endTime = System.nanoTime();
+
+        // Calculate the running time in nanoseconds
+        long runningTime = endTime - startTime;
+
+        // Print the minimum time and running time in nanoseconds
+        System.out.println("Minimum time: " + minTime);
+        System.out.println("Running time: " + runningTime + " nanoseconds");
     }
 }

@@ -56,6 +56,8 @@ public class KruskalsAlgorithm {
     }
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis(); // Record start time
+
         int V = 8;
         KruskalsAlgorithm graph = new KruskalsAlgorithm(V);
 
@@ -77,5 +79,9 @@ public class KruskalsAlgorithm {
         graph.addEdge(2, 7, 14);
 
         kruskalMST();
+
+        long endTime = System.currentTimeMillis(); // Record end time
+        long executionTime = endTime - startTime; // Calculate execution time
+        System.out.println("Execution Time: " + executionTime + " milliseconds");
     }
 }

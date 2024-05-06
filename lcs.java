@@ -1,9 +1,9 @@
 import java.util.Scanner;
 
-import javax.sound.midi.SysexMessage;
-
 public class lcs {
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis(); // Record start time
+
         Scanner sc = new Scanner(System.in);
 
         String s1 = "aniketparaswar";
@@ -18,17 +18,13 @@ public class lcs {
             for (int j = 1; j <= col; j++) {
                 if (s1.charAt(j - 1) == s2.charAt(i - 1)) {
                     matrix[i][j] = matrix[i - 1][j - 1] + 1;
-                }
-                else
-                {
-                    matrix[i][j]= Math.max(matrix[i - 1][j],matrix[i][j-1]);
+                } else {
+                    matrix[i][j] = Math.max(matrix[i - 1][j], matrix[i][j - 1]);
                 }
             }
         }
-        for(int i=0;i<=row;i++)
-        {
-            for(int j=0;j<=col;j++)
-            {
+        for (int i = 0; i <= row; i++) {
+            for (int j = 0; j <= col; j++) {
                 System.out.print(matrix[i][j]);
             }
             System.out.println();
@@ -53,5 +49,9 @@ public class lcs {
         for (char c : lcs) {
             System.out.print(c);
         }
+
+        long endTime = System.currentTimeMillis(); // Record end time
+        long executionTime = endTime - startTime; // Calculate execution time
+        System.out.println("\nExecution Time: " + executionTime + " milliseconds");
     }
 }

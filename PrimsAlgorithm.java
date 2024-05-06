@@ -3,6 +3,8 @@ import java.util.Arrays;
 public class PrimsAlgorithm {
 
     static void primMST(int graph[][]) {
+        long startTime = System.currentTimeMillis(); // Record start time
+        
         int V = graph.length;
         int[] parent = new int[V];
         int[] key = new int[V];
@@ -27,6 +29,10 @@ public class PrimsAlgorithm {
         }
 
         printMST(parent, graph);
+        
+        long endTime = System.currentTimeMillis(); // Record end time
+        long executionTime = endTime - startTime; // Calculate execution time
+        System.out.println("Execution Time: " + executionTime + " milliseconds");
     }
 
     static int minKey(int[] key, boolean[] mstSet) {

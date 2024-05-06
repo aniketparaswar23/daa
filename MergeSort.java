@@ -71,6 +71,8 @@ class MergeSort {
     }
 
     public static void main(String[] args) {
+        long startTime = System.currentTimeMillis(); // Record start time
+
         int arr1[] = {90, 10, 30, 60, 50, 40, 100, 70, 20, 80};
         int n = 10;
 
@@ -80,5 +82,9 @@ class MergeSort {
         mergesort(arr1, 0, n - 1);
         System.out.print("after -  ");
         printArr(arr1);
+
+        long endTime = System.currentTimeMillis(); // Record end time
+        long executionTime = endTime - startTime; // Calculate execution time
+        System.out.println("Execution Time: " + executionTime + " milliseconds");
     }
 }

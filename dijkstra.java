@@ -1,6 +1,7 @@
 import java.util.*;
 public class dijkstra {
     public static void main(String[] args) {
+        long startTime = System.nanoTime();
         Scanner sc =new Scanner(System.in);
         int v=9;//sc.nextInt();
         int e=29;//sc.nextInt();
@@ -30,6 +31,9 @@ public class dijkstra {
         {
             System.out.println(distance[i]+" ");
         }
+        long endTime = System.nanoTime();
+        long runningTime = endTime - startTime;
+        System.out.println("Running time: " + runningTime + " nanoseconds");
 
     }
 
