@@ -1,0 +1,1611 @@
+--------------------------------
+         MERGE SORT
+--------------------------------
+// best case TC = O(NlogN)
+// worst case TC = O(NlogN)
+import java.util.*;
+
+class Solution {
+    private static void merge(int[] arr, int low, int mid, int high) {
+        ArrayList<Integer> temp = new ArrayList<>(); // temporary array
+        int left = low;      // starting index of left half of arr
+        int right = mid + 1;   // starting index of right half of arr
+
+        //storing elements in the temporary array in a sorted manner//
+
+        while (left <= mid && right <= high) {
+            if (arr[left] <= arr[right]) {
+                temp.add(arr[left]);
+                left++;
+            } else {
+                temp.add(arr[right]);
+                right++;
+            }
+        }
+
+        // if elements on the left half are still left //
+
+        while (left <= mid) {
+            temp.add(arr[left]);
+            left++;
+        }
+
+        //  if elements on the right half are still left //
+        while (right <= high) {
+            temp.add(arr[right]);
+            right++;
+        }
+
+        // transfering all elements from temporary to arr //
+        for (int i = low; i <= high; i++) {
+            arr[i] = temp.get(i - low);
+        }
+    }
+
+    public static void mergeSort(int[] arr, int low, int high) {
+        if (low >= high) return;
+        int mid = (low + high) / 2 ;
+        mergeSort(arr, low, mid);  // left half
+        mergeSort(arr, mid + 1, high); // right half
+        merge(arr, low, mid, high);  // merging sorted halves
+    }
+}
+public class tUf {
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+        int n = 7;
+        int arr[] = { 9, 4, 7, 6, 3, 1, 5 };
+        System.out.println("Before sorting array: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+        Solution.mergeSort(arr, 0, n - 1);
+        System.out.println("After sorting array: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+}
+
+
+----------------------------------------------------
+                    QUICK SORT
+----------------------------------------------------
+// best case TC = O(NlogN)
+// worst case TC = O(N^2)
+import java.util.*;
+
+class Solution {
+    static int partition(List<Integer> arr, int low, int high) {
+        int pivot = arr.get(low);
+        int i = low;
+        int j = high;
+
+        while (i < j) {
+            while (arr.get(i) <= pivot && i <= high - 1) {
+                i++;
+            }
+
+            while (arr.get(j) > pivot && j >= low + 1) {
+                j--;
+            }
+            if (i < j) {
+                int temp = arr.get(i);
+                arr.set(i, arr.get(j));
+                arr.set(j, temp);
+            }
+        }
+        int temp = arr.get(low);
+        arr.set(low, arr.get(j));
+        arr.set(j, temp);
+        return j;
+    }
+
+    static void qs(List<Integer> arr, int low, int high) {
+        if (low < high) {
+            int pIndex = partition(arr, low, high);
+            qs(arr, low, pIndex - 1);
+            qs(arr, pIndex + 1, high);
+        }
+    }
+    public static List<Integer> quickSort(List<Integer> arr) {
+        // Write your code here.
+        qs(arr, 0, arr.size() - 1);
+        return arr;
+    }
+}
+
+public class tUf {
+    public static void main(String args[]) {
+        List<Integer> arr = new ArrayList<>();
+        arr = Arrays.asList(new Integer[] {4, 6, 2, 5, 7, 9, 1, 3});
+        int n = arr.size();
+        System.out.println("Before Using insertion Sort: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr.get(i) + " ");
+        }
+        System.out.println();
+        arr = Solution.quickSort(arr);
+        System.out.println("After insertion sort: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr.get(i) + " ");
+        }
+        System.out.println();
+    }
+
+} 
+
+------------------------------------------
+      ASSEMBLY LINE SCHEDULLING
+------------------------------------------
+//TC = O(N)
+class Solution {
+    public static int carAssembly(int n, int[][] a, int[][] T, int[] e, int[] x) {
+        a[0][0] += e[0] ; 
+        a[1][0] += e[1] ; 
+        
+        for(int i=1;i<a[0].length;i++){
+            a[0][i] = a[0][i] + Math.min(a[0][i-1] , a[1][i-1] + T[1][i]) ;
+            a[1][i] = a[1][i] + Math.min(a[1][i-1] , a[0][i-1] + T[0][i]) ;
+        }
+        
+        return Math.min(a[0][a[0].length-1] + x[0] , a[1][a[0].length-1] + x[1]) ; 
+    }
+}
+
+
+---------------------------------------------
+          MATRIX CHAIN MULTIPLICATION
+--------------------------------------------
+
+// TC = O(N^2)
+
+import java.util.*;
+
+class TUF{
+static int f(int arr[], int i, int j, int[][] dp){
+    
+    // base condition
+    if(i == j)
+        return 0;
+        
+    if(dp[i][j]!=-1)
+        return dp[i][j];
+    
+    int mini = Integer.MAX_VALUE;
+    
+    // partioning loop
+    for(int k = i; k<= j-1; k++){
+        
+    int ans = f(arr,i,k,dp) + f(arr, k+1,j,dp) + arr[i-1]*arr[k]*arr[j];
+        
+    mini = Math.min(mini,ans);
+        
+    }
+    
+    return mini;
+}
+
+
+static int matrixMultiplication(int[] arr, int N){
+    
+    int dp[][]= new int[N][N];
+    
+    for(int row[]:dp)
+    Arrays.fill(row,-1);
+    
+    int i =1;
+    int j = N-1;
+    
+    
+    return f(arr,i,j,dp);
+    
+    
+}
+
+public static void main(String args[]) {
+	
+	int arr[] = {10, 20, 30, 40, 50};
+	
+	int n = arr.length;
+	
+	System.out.println("The minimum number of operations are "+
+        matrixMultiplication(arr,n));
+	
+}
+}
+
+
+
+--------------------------------------------------
+          LONGEST COMMON SUBSEQUENCE
+--------------------------------------------------
+
+//TC = O(N^2)
+
+public int longestCommonSubsequence(String text1, String text2) {
+        int dp[][] = new int[text1.length()+1][text2.length()+1] ; 
+        for(int[] I : dp) Arrays.fill(I ,-1) ; 
+        
+        for(int i = 0;i<= text1.length();i++) dp[i][0] = 0 ;
+        for(int i = 0;i<= text2.length();i++) dp[0][i] = 0 ;
+
+        for(int idx1=1;idx1<=text1.length();idx1++){
+            for(int idx2 = 1 ;idx2<=text2.length();idx2++){
+               
+                 if(text1.charAt(idx1-1) == text2.charAt(idx2-1))
+                dp[idx1][idx2] = 1 + dp[idx1-1][idx2-1];
+                else  
+                dp[idx1][idx2] = Math.max(dp[idx1-1][idx2] ,dp[idx1][idx2-1]);
+            }
+        }
+
+        return dp[text1.length()][text2.length()] ; 
+       
+    }
+
+
+
+
+
+----------------------------------------------
+           DIJSKTRA'S ALGO
+----------------------------------------------
+//TC = O(Elog(V) )
+class Solution
+{
+    static class Pair{
+        int node;
+        int dist;
+        Pair(int n,int d){
+            node=n;
+            dist=d;
+        }
+    }
+    static int[] dijkstra(int V, ArrayList<ArrayList<ArrayList<Integer>>> adj, int S)
+    {
+        int dist[]=new int[V];
+        for(int i=0;i<V;i++) dist[i]=Integer.MAX_VALUE;
+        dist[S]=0;
+        
+        PriorityQueue<Pair> pq=new PriorityQueue<Pair>((x,y)->x.dist-y.dist);
+        pq.add(new Pair(S,0));
+        
+        while(!pq.isEmpty()){
+            Pair temp=pq.remove();
+            int node=temp.node;
+            int distance=temp.dist;
+            
+            for(ArrayList<Integer> I : adj.get(node)){
+                int newNode=I.get(0);
+                int newDist=I.get(1);
+                int finalDist=newDist+distance;
+                
+                if(finalDist<dist[newNode]){
+                    pq.add(new Pair(newNode,finalDist));
+                    dist[newNode]=finalDist;
+                }
+            }
+        }
+        return dist;
+    }
+}
+
+
+-------------------------------------
+          BELLMAN FORD ALGO
+-------------------------------------
+
+// TC = O(V * E)
+import java.util.*;
+
+/*
+*   edges: vector of vectors which represents the graph
+*   S: source vertex to start traversing graph with
+*   V: number of vertices
+*/
+class Solution {
+    static int[] bellman_ford(int V,
+                              ArrayList<ArrayList<Integer>> edges, int S) {
+        int[] dist = new int[V];
+        for (int i = 0; i < V; i++) dist[i] = (int)(1e8);
+        dist[S] = 0;
+        // V x E
+        for (int i = 0; i < V - 1; i++) {
+            for (ArrayList<Integer> it : edges) {
+                int u = it.get(0);
+                int v = it.get(1);
+                int wt = it.get(2);
+                if (dist[u] != 1e8 && dist[u] + wt < dist[v]) {
+                    dist[v] = dist[u] + wt;
+                }
+            }
+        }
+       
+        return dist;
+    }
+}
+
+public class tUf {
+    public static void main(String[] args) {
+        int V = 6;
+        int S = 0;
+        ArrayList<ArrayList<Integer>> edges = new ArrayList<>() {
+            {
+                add(new ArrayList<Integer>(Arrays.asList(3, 2, 6)));
+                add(new ArrayList<Integer>(Arrays.asList(5, 3, 1)));
+                add(new ArrayList<Integer>(Arrays.asList(0, 1, 5)));
+                add(new ArrayList<Integer>(Arrays.asList(1, 5, -3)));
+                add(new ArrayList<Integer>(Arrays.asList(1, 2, -2)));
+                add(new ArrayList<Integer>(Arrays.asList(3, 4, -2)));
+                add(new ArrayList<Integer>(Arrays.asList(2, 4, 3)));
+            }
+        };
+
+
+
+        int[] dist = Solution.bellman_ford(V, edges, S);
+        for (int i = 0; i < V; i++) {
+            System.out.print(dist[i] + " ");
+        }
+        System.out.println("");
+    }
+}
+
+
+-----------------------------------------------
+            FRACTIONAL KNAPSACK
+-----------------------------------------------
+//TC = O(NlogN)
+import java.util.*;
+class Item {
+  int value, weight;
+  Item(int x, int y) {
+    this.value = x;
+    this.weight = y;
+  }
+}
+
+class itemComparator implements Comparator<Item>
+{
+    @Override
+    public int compare(Item a, Item b) 
+    {
+        double r1 = (double)(a.value) / (double)(a.weight); 
+        double r2 = (double)(b.value) / (double)(b.weight); 
+        if(r1 < r2) return 1; 
+        else if(r1 > r2) return -1; 
+        else return 0; 
+    }
+}
+public class solve{
+    static double fractionalKnapsack(int W, Item arr[], int n) {
+        Arrays.sort(arr, new itemComparator()); 
+        
+        int curWeight = 0; 
+        double finalvalue = 0.0; 
+        
+        for (int i = 0; i < n; i++) {
+       
+            if (curWeight + arr[i].weight <= W) {
+                curWeight += arr[i].weight;
+                finalvalue += arr[i].value;
+            }
+     
+            else {
+                int remain = W - curWeight;
+                finalvalue += ((double)arr[i].value / (double)arr[i].weight) * (double)remain;
+                break;
+            }
+        }
+     
+        return finalvalue;
+        
+    }
+    public static void main(String args[])
+    {
+        int n = 3, weight = 50;
+        Item arr[] = {new Item (100,20),new Item(60,10),new Item(120,30)};
+        double ans = fractionalKnapsack(weight, arr, n);
+        System.out.println("The maximum value is "+ans);
+    }
+}
+
+
+
+
+-------------------------------------------- 
+              HUFFMAN CODING
+--------------------------------------------
+//TC = O(NlogN)
+
+import java.util.* ;
+class Greedy2{
+public static void main(String[] args) {
+String message = "";
+for(int i = 0; i<6; i++){
+for(int j = 0; j<(48 + 49*i)%10; j++){
+message = message + String.valueOf((char)(i+65));
+}
+}
+System.out.println(message);
+Map<Character, Integer> frequencyMap = new HashMap<>();
+Min_Heap h = new Min_Heap();
+for (char c : message.toCharArray()) {
+frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+}
+// Min_Heap h = new Min_Heap();
+for (Map.Entry<Character, Integer> entry :
+frequencyMap.entrySet()) {
+char c = entry.getKey();
+int f = entry.getValue();
+Huff_Cell hf = new Huff_Cell(c,f);
+System.out.println("Character: " + entry.getKey() + ",
+Frequency: " + entry.getValue());
+h.Add(hf);
+}
+Huff_Cell.build_tree(h);
+System.out.println("\nInorder Traversal");
+Min_Heap.inorder(h.heap[1]);
+System.out.println("\nHuffman Codes");
+Min_Heap.assign(h.heap[1]);
+// h.print_heap();
+}
+
+}
+class Huff_Cell{
+String code;
+int freq;
+
+char x;
+Huff_Cell left;
+Huff_Cell right;
+Huff_Cell(char c, int f){
+x = c;
+freq = f;
+code ="";
+}
+Huff_Cell(Huff_Cell f1, Huff_Cell f2){
+x = '-';
+freq = f1.freq + f2.freq;
+left = f1;
+right = f2;
+code = "";
+}
+static void build_tree(Min_Heap h){
+int count = 0;
+int size = h.size;
+while(count<size-1){
+Huff_Cell f1 = h.Extract_min();
+Huff_Cell f2 = h.Extract_min();
+Huff_Cell f = new Huff_Cell(f1,f2);
+h.Add(f);
+count ++;
+}
+}
+}
+class Min_Heap{
+int size = 0;
+Huff_Cell[] heap = new Huff_Cell[100];
+void Add(Huff_Cell f){
+heap[++size] = f;
+int i = size;
+while(i>1){
+if(heap[i/2].freq > f.freq){
+Huff_Cell temp = heap[i];
+heap[i] = heap[i/2];
+heap[i/2] = temp;
+i = i/2;
+
+}
+else{
+break;
+}
+}
+}
+Huff_Cell Extract_min(){
+Huff_Cell f = heap[1];
+heap[1] = heap[size];
+size--;
+int i = 1;
+while(i<=size/2){
+int left = 2*i;
+int right = 2*i + 1;
+int min = i;
+if(left <= size && heap[left].freq < heap[min].freq){
+min = left;
+}
+if(right <= size && heap[right].freq < heap[min].freq){
+min = right;
+}
+if(min != i){
+Huff_Cell temp = heap[i];
+heap[i] = heap[min];
+heap[min] = temp;
+i = min;
+}
+else{
+break;
+}
+}
+return f;
+}
+void print_heap(){
+int pow = 2;
+int i = 1;
+while(i<size){
+System.out.println(heap[i]);
+if(i==pow-1){
+System.out.println();
+pow = pow*2;
+}
+
+}
+}
+static void assign(Huff_Cell root){
+if(root == null) return;
+if(root.left!=null)
+root.left.code += root.code + "0";
+if(root.right!=null)
+root.right.code += root.code + "1";
+assign(root.left);
+if(root.x!= '-')
+System.out.println("Character: "+root.x + " Code: "+root.code);
+assign(root.right);
+}
+static void inorder(Huff_Cell root){
+if(root == null) return;
+inorder(root.left);
+System.out.print(root.freq+" ");
+inorder(root.right);
+}
+}
+
+
+---------------------------------------------
+               0/1 KNAPSACK
+---------------------------------------------
+// TC = O(wt * N)
+
+import java.util.* ;
+import java.io.*; 
+
+public class Solution{
+
+    static int wt[] ; 
+    static int val[] ; 
+    static int dp[][] ; 
+
+    static int f(int idx , int maxWeight){
+        if(idx == wt.length) return 0  ;
+        
+        if(dp[idx][maxWeight] != -1) return dp[idx][maxWeight] ; 
+
+        int take = (maxWeight < wt[idx]) ? 0 : f(idx + 1 , maxWeight - wt[idx]) + val[idx] ; 
+        int notTake = f(idx + 1  , maxWeight) ; 
+
+        return dp[idx][maxWeight] =  Math.max(take , notTake) ; 
+    }
+    static int knapsack(int[] weight, int[] value, int n, int maxWeight) {
+        wt = weight ; 
+        val = value ; 
+
+        dp = new int[n][maxWeight+1] ; 
+        for(int[] i : dp) Arrays.fill(i , -1) ; 
+
+        return f(0 , maxWeight) ; 
+
+    }
+}
+
+
+---------------------------------------
+              N-QUEEN
+---------------------------------------
+
+// TC =  O(N! * N)
+
+import java.util.*;
+class TUF {
+    public static List < List < String >> solveNQueens(int n) {
+        char[][] board = new char[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                board[i][j] = '.';
+        List < List < String >> res = new ArrayList < List < String >> ();
+        dfs(0, board, res);
+        return res;
+    }
+
+    static boolean validate(char[][] board, int row, int col) {
+        int duprow = row;
+        int dupcol = col;
+        while (row >= 0 && col >= 0) {
+            if (board[row][col] == 'Q') return false;
+            row--;
+            col--;
+        }
+
+        row = duprow;
+        col = dupcol;
+        while (col >= 0) {
+            if (board[row][col] == 'Q') return false;
+            col--;
+        }
+
+        row = duprow;
+        col = dupcol;
+        while (col >= 0 && row < board.length) {
+            if (board[row][col] == 'Q') return false;
+            col--;
+            row++;
+        }
+        return true;
+    }
+
+    static void dfs(int col, char[][] board, List < List < String >> res) {
+        if (col == board.length) {
+            res.add(construct(board));
+            return;
+        }
+
+        for (int row = 0; row < board.length; row++) {
+            if (validate(board, row, col)) {
+                board[row][col] = 'Q';
+                dfs(col + 1, board, res);
+                board[row][col] = '.';
+            }
+        }
+    }
+
+
+
+    static List < String > construct(char[][] board) {
+        List < String > res = new LinkedList < String > ();
+        for (int i = 0; i < board.length; i++) {
+            String s = new String(board[i]);
+            res.add(s);
+        }
+        return res;
+    }
+    public static void main(String args[]) {
+        int N = 4;
+        List < List < String >> queen = solveNQueens(N);
+        int i = 1;
+        for (List < String > it: queen) {
+            System.out.println("Arrangement " + i);
+            for (String s: it) {
+                System.out.println(s);
+            }
+            System.out.println();
+            i += 1;
+        }
+        
+    }
+}
+
+
+---------------------------------------------
+            M-COLORING PROBLEM
+---------------------------------------------
+
+// TC = O(N^M)
+
+import java.util.*;
+class TUF {
+    public static boolean graphColoring(List < Integer > [] G, int[] color, int i, int C) {
+        // Your code here
+        int n = G.length;
+        if (solve(i, G, color, n, C) == true) return true;
+        return false;
+    }
+    private static boolean isSafe(int node, List < Integer > [] G, int[] color, int n, int col) {
+        for (int it: G[node]) {
+            if (color[it] == col) return false;
+        }
+        return true;
+    }
+    private static boolean solve(int node, List < Integer > [] G, int[] color, int n, int m) {
+        if (node == n) return true;
+
+        for (int i = 1; i <= m; i++) {
+            if (isSafe(node, G, color, n, i)) {
+                color[node] = i;
+                if (solve(node + 1, G, color, n, m) == true) return true;
+                color[node] = 0;
+            }
+        }
+        return false;
+    }
+    public static void main(String[] args) {
+        int N = 4, M = 3;
+        List < Integer > [] G = new ArrayList[N];
+        for (int i = 0; i < N; i++) {
+            G[i] = new ArrayList < > ();
+        }
+        G[0].add(1);
+        G[1].add(0);
+        G[1].add(2);
+        G[2].add(1);
+        G[2].add(3);
+        G[3].add(2);
+        G[3].add(0);
+        G[0].add(3);
+        G[0].add(2);
+        G[2].add(0);
+        int[] color = new int[N];
+        boolean ans = graphColoring(G, color, 0, M);
+        if (ans == true)
+            System.out.println("1");
+        else
+            System.out.println("0");
+    }
+}
+
+-----------------------------------------
+                 SET COVER
+------------------------------------------
+
+
+//TC = O((m + n) * k + m * log m)
+
+
+import java.util.*;
+
+class Subset {
+    Set<Integer> elements;
+    int cost;
+
+    public Subset(Set<Integer> elements, int cost) {
+        this.elements = elements;
+        this.cost = cost;
+    }
+}
+
+public class MinimumCostSetCover {
+
+    public static int minimumCost(Set<Integer>[] sets, int[] costs, int n) {
+        Set<Integer> universe = new HashSet<>();
+        for (int i = 1; i <= n; i++) {
+            universe.add(i);
+        }
+
+        List<Subset> subsets = new ArrayList<>();
+        for (int i = 0; i < sets.length; i++) {
+            subsets.add(new Subset(sets[i], costs[i]));
+        }
+
+        PriorityQueue<Subset> pq = new PriorityQueue<>((a, b) -> a.cost - b.cost);
+        pq.addAll(subsets);
+
+        Set<Integer> covered = new HashSet<>();
+        int minCost = 0;
+        while (!universe.isEmpty()) {
+            Subset subset = pq.poll();
+            Set<Integer> intersection = new HashSet<>(universe);
+            intersection.retainAll(subset.elements);
+
+            if (!intersection.isEmpty()) {
+                universe.removeAll(intersection);
+                covered.addAll(intersection);
+                minCost += subset.cost;
+            }
+        }
+
+        return minCost;
+    }
+
+    public static void main(String[] args) {
+        Set<Integer>[] sets = new Set[3];
+        sets[0] = new HashSet<>(Arrays.asList(4, 1, 3));
+        sets[1] = new HashSet<>(Arrays.asList(2, 5));
+        sets[2] = new HashSet<>(Arrays.asList(1, 4, 3, 2));
+
+        int[] costs = {5, 10, 3};
+
+        int n = 5; // Size of the universe
+
+        int minCost = minimumCost(sets, costs, n);
+        System.out.println("Minimum cost of set cover is " + minCost);
+    }
+}
+
+
+---------------------------------------
+           RABIN KARP
+---------------------------------------
+
+// TC = O(m+n)
+
+import java.util.* ; 
+class Solution {       //using Rabin Carp Algo
+
+    static int mod = 1000000007 ; 
+    static int base = 26 ; 
+    
+    static int hashFunc(String s){
+        int ans=0;  
+        for(int i=0;i<s.length() ;i++){
+            int digit = s.charAt(i) - 'a' + 1 ; 
+            ans = (ans*base + digit ) % mod ; 
+        }
+
+        return ans ; 
+    }
+
+    static boolean verify(String src , int i , String b , int j){
+       
+       int k=0;
+
+       while(i<=j){
+           if(src.charAt(i) != b.charAt(k)) return false; 
+           k++;
+           i++;
+       }
+
+       return true; 
+    }
+    static List<Integer> rabinCarp(String src , String b){  
+        // we have to check if String b is there in String  src
+     int key = hashFunc(b) ; 
+     List<Integer> ans = new ArrayList<>() ; 
+     int i=0;
+     int j=b.length()-1 ; 
+     int currHash =0;
+     while(j < src.length()){
+       
+       if(currHash == 0 ){
+           currHash = hashFunc(src.substring(i,j+1)) ; 
+       }
+       else{
+           currHash = currHash -( (src.charAt(i-1) - 'a' + 1 ) * (int)Math.pow(26 , b.length()-1)) ; 
+           currHash = (currHash *26 + src.charAt(j) - 'a' + 1) % mod ; 
+       }
+
+       if(currHash == key){
+           if(verify(src , i , b , j)){
+                ans.add(i) ;  
+           }
+       }
+       i++ ; 
+       j++ ; 
+
+     }
+
+        return ans ; 
+    }
+    public static  void main(String args[]) {
+         String pattern = "aba" ; 
+         String txt = "ababa" ; 
+         List<Integer> ans = rabinCarp(txt , pattern) ; 
+         System.out.println(ans) ; 
+    }
+}
+
+
+-------------------------------------------
+                    KMP
+-------------------------------------------
+
+TC = O(m+n)
+
+class Solution {
+
+    ArrayList<Integer> search(String pat, String txt) {
+        ArrayList<Integer> result = new ArrayList<>();
+        int N = txt.length();
+        int M = pat.length();
+
+        int[] lps = computeLPS(pat);
+
+        int i = 0; // Index for text
+        int j = 0; // Index for pattern
+
+        while (i < N) {
+            if (j < M && pat.charAt(j) == txt.charAt(i)) {
+                i++;
+                j++;
+            }
+
+            if (j == M) {
+                result.add(i - j + 1); // Pattern found at index i - j + 1 (1-based indexing)
+                j = lps[j - 1];
+            } else if (i < N && (j == 0 || pat.charAt(j) != txt.charAt(i))) {
+                if (j != 0) {
+                    j = lps[j - 1];
+                } else {
+                    i++;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    private int[] computeLPS(String pattern) {
+        int M = pattern.length();
+        int[] lps = new int[M];
+        int len = 0; // Length of the previous longest prefix suffix
+
+        lps[0] = 0; // Because there is no proper suffix and prefix of pattern[0..0]
+
+        int i = 1;
+        while (i < M) {
+            if (pattern.charAt(i) == pattern.charAt(len)) {
+                len++;
+                lps[i] = len;
+                i++;
+            } else {
+                if (len != 0) {
+                    len = lps[len - 1]; 
+                } else {
+                    lps[i] = 0;
+                    i++;
+                }
+            }
+        }
+
+        return lps;
+    }
+}
+
+
+
+--------------------------------------
+            TOWER OF HANOI
+--------------------------------------
+
+TC = O(2^N)
+
+import java.io.*; 
+import java.math.*; 
+import java.util.*; 
+class Solve { 
+	static void towerOfHanoi(int n, char from_rod, 
+							char to_rod, char aux_rod) 
+	{ 
+		if (n == 0) { 
+			return; 
+		} 
+		towerOfHanoi(n - 1, from_rod, aux_rod, to_rod); 
+		System.out.println("Move disk " + n + " from rod "
+						+ from_rod + " to rod "
+						+ to_rod); 
+		towerOfHanoi(n - 1, aux_rod, to_rod, from_rod); 
+	} 
+
+
+	public static void main(String args[]) 
+	{ 
+		int N = 3; 
+
+		// A, B and C are names of rods 
+		towerOfHanoi(N, 'A', 'C', 'B'); 
+	} 
+} 
+
+
+
+
+--------------------------------------------
+         TRAVELLING SALESMAN (DP)
+--------------------------------------------
+//  TC = O(2^N * N)
+
+import java.util.* ;
+import java.io.*; 
+public class Solution {
+   static  int src = 0 ; 
+   static int[][] dp ;
+   static int n ; 
+    static int f(int node , int mask , int[][] dist){
+        if((1 <<n) -1 == mask) return dist[src][node] ; 
+
+        if(dp[node][mask] != -1) return dp[node][mask] ; 
+        int min = Integer.MAX_VALUE ; 
+        for(int i=0;i<n;i++){
+            if((mask & (1 << i) )== 0) min = Math.min(min , dist[node][i] + f(i, mask | (1 <<  i )  , dist)) ; 
+        }
+
+        return dp[node][mask]  = min ; 
+    }
+    public static int shortestRoute(int[][] distance) {
+          n = distance.length ; 
+           dp = new int[n+1][1 << n] ; 
+           for(int[] i : dp) Arrays.fill(i,-1) ; 
+           return f(src ,1 ,distance) ; 
+    }
+}
+
+------------------------------------------
+TRAVELLING SALESMAN (APPROXIMATION)
+------------------------------------------
+
+//TC = O(2^N)
+
+import java.util.*;
+
+public class TSPNearestNeighbor {
+    private int[][] graph;
+    private int numOfNodes;
+
+    public TSPNearestNeighbor(int[][] graph) {
+        this.graph = graph;
+        this.numOfNodes = graph.length;
+    }
+
+    public int findMinCost() {
+        List<Integer> path = findPath();
+        int minCost = calculateCost(path);
+        return minCost;
+    }
+
+    private List<Integer> findPath() {
+        List<Integer> path = new ArrayList<>();
+        boolean[] visited = new boolean[numOfNodes];
+        
+        // Start with the first node
+        int currentNode = 0;
+        path.add(currentNode);
+        visited[currentNode] = true;
+
+        // Iterate over each node to find the nearest neighbor
+        for (int i = 0; i < numOfNodes - 1; i++) {
+            int nearestNeighbor = findNearestNeighbor(currentNode, visited);
+            path.add(nearestNeighbor);
+            visited[nearestNeighbor] = true;
+            currentNode = nearestNeighbor;
+        }
+
+        // Add the starting node to complete the cycle
+        path.add(0);
+
+        return path;
+    }
+
+    private int findNearestNeighbor(int currentNode, boolean[] visited) {
+        int nearestNeighbor = -1;
+        int minDistance = Integer.MAX_VALUE;
+
+        for (int i = 0; i < numOfNodes; i++) {
+            if (!visited[i] && graph[currentNode][i] < minDistance) {
+                nearestNeighbor = i;
+                minDistance = graph[currentNode][i];
+            }
+        }
+
+        return nearestNeighbor;
+    }
+
+    private int calculateCost(List<Integer> path) {
+        int cost = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            int from = path.get(i);
+            int to = path.get(i + 1);
+            cost += graph[from][to];
+        }
+        return cost;
+    }
+
+    public static void main(String[] args) {
+        int[][] graph = {
+            {0, 10, 15, 20},
+            {10, 0, 35, 25},
+            {15, 35, 0, 30},
+            {20, 25, 30, 0}
+        };
+
+        TSPNearestNeighbor tsp = new TSPNearestNeighbor(graph);
+        int minCost = tsp.findMinCost();
+
+        System.out.println("Minimum cost of TSP using Nearest Neighbor: " + minCost);
+    }
+}
+
+
+
+--------------------------------------------------
+      0/1 KNAPSACK (BRANCH AND BOUND)
+--------------------------------------------------
+
+//TC = O(2^N)
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
+class Item {
+	float weight;
+	int value;
+
+	Item(float weight, int value) {
+		this.weight = weight;
+		this.value = value;
+	}
+}
+
+class Node {
+	int level, profit, bound;
+	float weight;
+
+	Node(int level, int profit, float weight) {
+		this.level = level;
+		this.profit = profit;
+		this.weight = weight;
+	}
+}
+
+public class KnapsackBranchAndBound {
+	static Comparator<Item> itemComparator = (a, b) -> {
+		double ratio1 = (double) a.value / a.weight;
+		double ratio2 = (double) b.value / b.weight;
+		// Sorting in decreasing order of value per unit weight
+		return Double.compare(ratio2, ratio1);
+	};
+
+	static int bound(Node u, int n, int W, Item[] arr) {
+		if (u.weight >= W)
+			return 0;
+
+		int profitBound = u.profit;
+		int j = u.level + 1;
+		float totalWeight = u.weight;
+
+		while (j < n && totalWeight + arr[j].weight <= W) {
+			totalWeight += arr[j].weight;
+			profitBound += arr[j].value;
+			j++;
+		}
+
+		if (j < n)
+			profitBound += (int) ((W - totalWeight) * arr[j].value / arr[j].weight);
+
+		return profitBound;
+	}
+
+	static int knapsack(int W, Item[] arr, int n) {
+		Arrays.sort(arr, itemComparator);
+		PriorityQueue<Node> priorityQueue =
+		new PriorityQueue<>((a, b) -> Integer.compare(b.bound, a.bound));
+		Node u, v;
+
+		u = new Node(-1, 0, 0);
+		priorityQueue.offer(u);
+
+		int maxProfit = 0;
+
+		while (!priorityQueue.isEmpty()) {
+			u = priorityQueue.poll();
+
+			if (u.level == -1)
+				v = new Node(0, 0, 0);
+			else if (u.level == n - 1)
+				continue;
+			else
+				v = new Node(u.level + 1, u.profit, u.weight);
+
+			v.weight += arr[v.level].weight;
+			v.profit += arr[v.level].value;
+
+			if (v.weight <= W && v.profit > maxProfit)
+				maxProfit = v.profit;
+
+			v.bound = bound(v, n, W, arr);
+
+			if (v.bound > maxProfit)
+				priorityQueue.offer(v);
+
+			v = new Node(u.level + 1, u.profit, u.weight);
+			v.bound = bound(v, n, W, arr);
+
+			if (v.bound > maxProfit)
+				priorityQueue.offer(v);
+		}
+
+		return maxProfit;
+	}
+
+	public static void main(String[] args) {
+		int W = 10;
+		Item[] arr = {
+			new Item(2, 40),
+			new Item(3.14f, 50),
+			new Item(1.98f, 100),
+			new Item(5, 95),
+			new Item(3, 30)
+		};
+		int n = arr.length;
+
+		int maxProfit = knapsack(W, arr, n);
+		System.out.println("Maximum possible profit = " + maxProfit);
+	}
+}
+
+
+--------------------------------------------------
+     TRAVELLING SALESMAN (BRANCH AND BOUND)
+--------------------------------------------------
+
+import java.util.*;
+
+class Solve
+{
+	
+	static int N = 4;
+
+	// final_path[] stores the final solution ie, the
+	// path of the salesman.
+	static int final_path[] = new int[N + 1];
+
+	// visited[] keeps track of the already visited nodes
+	// in a particular path
+	static boolean visited[] = new boolean[N];
+
+	// Stores the final minimum weight of shortest tour.
+	static int final_res = Integer.MAX_VALUE;
+
+	// Function to copy temporary solution to
+	// the final solution
+	static void copyToFinal(int curr_path[])
+	{
+		for (int i = 0; i < N; i++)
+			final_path[i] = curr_path[i];
+		final_path[N] = curr_path[0];
+	}
+
+	// Function to find the minimum edge cost
+	// having an end at the vertex i
+	static int firstMin(int adj[][], int i)
+	{
+		int min = Integer.MAX_VALUE;
+		for (int k = 0; k < N; k++)
+			if (adj[i][k] < min && i != k)
+				min = adj[i][k];
+		return min;
+	}
+
+	// function to find the second minimum edge cost
+	// having an end at the vertex i
+	static int secondMin(int adj[][], int i)
+	{
+		int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
+		for (int j=0; j<N; j++)
+		{
+			if (i == j)
+				continue;
+
+			if (adj[i][j] <= first)
+			{
+				second = first;
+				first = adj[i][j];
+			}
+			else if (adj[i][j] <= second &&
+					adj[i][j] != first)
+				second = adj[i][j];
+		}
+		return second;
+	}
+
+	// function that takes as arguments:
+	// curr_bound -> lower bound of the root node
+	// curr_weight-> stores the weight of the path so far
+	// level-> current level while moving in the search
+	//		 space tree
+	// curr_path[] -> where the solution is being stored which
+	//			 would later be copied to final_path[]
+	static void TSPRec(int adj[][], int curr_bound, int curr_weight,
+				int level, int curr_path[])
+	{
+		// base case is when we have reached level N which
+		// means we have covered all the nodes once
+		if (level == N)
+		{
+			// check if there is an edge from last vertex in
+			// path back to the first vertex
+			if (adj[curr_path[level - 1]][curr_path[0]] != 0)
+			{
+				// curr_res has the total weight of the
+				// solution we got
+				int curr_res = curr_weight +
+						adj[curr_path[level-1]][curr_path[0]];
+	
+				// Update final result and final path if
+				// current result is better.
+				if (curr_res < final_res)
+				{
+					copyToFinal(curr_path);
+					final_res = curr_res;
+				}
+			}
+			return;
+		}
+
+		// for any other level iterate for all vertices to
+		// build the search space tree recursively
+		for (int i = 0; i < N; i++)
+		{
+			// Consider next vertex if it is not same (diagonal
+			// entry in adjacency matrix and not visited
+			// already)
+			if (adj[curr_path[level-1]][i] != 0 &&
+					visited[i] == false)
+			{
+				int temp = curr_bound;
+				curr_weight += adj[curr_path[level - 1]][i];
+
+				// different computation of curr_bound for
+				// level 2 from the other levels
+				if (level==1)
+				curr_bound -= ((firstMin(adj, curr_path[level - 1]) +
+								firstMin(adj, i))/2);
+				else
+				curr_bound -= ((secondMin(adj, curr_path[level - 1]) +
+								firstMin(adj, i))/2);
+
+				// curr_bound + curr_weight is the actual lower bound
+				// for the node that we have arrived on
+				// If current lower bound < final_res, we need to explore
+				// the node further
+				if (curr_bound + curr_weight < final_res)
+				{
+					curr_path[level] = i;
+					visited[i] = true;
+
+					// call TSPRec for the next level
+					TSPRec(adj, curr_bound, curr_weight, level + 1,
+						curr_path);
+				}
+
+				// Else we have to prune the node by resetting
+				// all changes to curr_weight and curr_bound
+				curr_weight -= adj[curr_path[level-1]][i];
+				curr_bound = temp;
+
+				// Also reset the visited array
+				Arrays.fill(visited,false);
+				for (int j = 0; j <= level - 1; j++)
+					visited[curr_path[j]] = true;
+			}
+		}
+	}
+
+	// This function sets up final_path[] 
+	static void TSP(int adj[][])
+	{
+		int curr_path[] = new int[N + 1];
+
+		// Calculate initial lower bound for the root node
+		// using the formula 1/2 * (sum of first min +
+		// second min) for all edges.
+		// Also initialize the curr_path and visited array
+		int curr_bound = 0;
+		Arrays.fill(curr_path, -1);
+		Arrays.fill(visited, false);
+
+		// Compute initial bound
+		for (int i = 0; i < N; i++)
+			curr_bound += (firstMin(adj, i) +
+						secondMin(adj, i));
+
+		// Rounding off the lower bound to an integer
+		curr_bound = (curr_bound==1)? curr_bound/2 + 1 :
+									curr_bound/2;
+
+		// We start at vertex 1 so the first vertex
+		// in curr_path[] is 0
+		visited[0] = true;
+		curr_path[0] = 0;
+
+		// Call to TSPRec for curr_weight equal to
+		// 0 and level 1
+		TSPRec(adj, curr_bound, 0, 1, curr_path);
+	}
+	
+	// Driver code
+	public static void main(String[] args) 
+	{
+		//Adjacency matrix for the given graph
+		int adj[][] = {{0, 10, 15, 20},
+						{10, 0, 35, 25},
+						{15, 35, 0, 30},
+						{20, 25, 30, 0} };
+
+		TSP(adj);
+
+		System.out.printf("Minimum cost : %d\n", final_res);
+		System.out.printf("Path Taken : ");
+		for (int i = 0; i <= N; i++) 
+		{
+			System.out.printf("%d ", final_path[i]);
+		}
+	}
+}
+
+------------------------------------------------------------------------------
+     8 -PUZZLE PROBLEM (HAS SOME BUGS ,WILL HAVE TO MODIFY FOR 15 - PUZZLE)
+-------------------------------------------------------------------------------
+
+
+
+import java.io.*;
+import java.util.*;
+
+class Solve
+{ 
+	public static int N = 3;
+	public static class Node
+	{
+	
+		// stores the parent node of the current node
+		// helps in tracing path when the answer is found
+		Node parent;
+		int mat[][] = new int[N][N];// stores matrix
+		int x, y;// stores blank tile coordinates
+		int cost;// stores the number of misplaced tiles
+		int level;// stores the number of moves so far
+	}
+	
+	// Function to print N x N matrix
+	public static void printMatrix(int mat[][]){
+		for(int i = 0; i < N; i++){
+			for(int j = 0; j < N; j++){
+				System.out.print(mat[i][j]+" ");
+			}
+			System.out.println("");
+		}
+	}
+	
+	// Function to allocate a new node
+	public static Node newNode(int mat[][], int x, int y, 
+							int newX, int newY, int level, 
+							Node parent){
+		Node node = new Node();
+		node.parent = parent;// set pointer for path to root
+		
+		// copy data from parent node to current node
+		node.mat = new int[N][N];
+		for(int i = 0; i < N; i++){
+			for(int j = 0; j < N; j++){
+				node.mat[i][j] = mat[i][j];
+			}
+		}
+		
+		// move tile by 1 position
+		int temp = node.mat[x][y];
+		node.mat[x][y] = node.mat[newX][newY];
+		node.mat[newX][newY]=temp;
+		
+		node.cost = Integer.MAX_VALUE;// set number of misplaced tiles
+		node.level = level;// set number of moves so far
+		
+		// update new blank tile coordinates
+		node.x = newX;
+		node.y = newY;
+		
+		return node;
+	}
+	
+	// bottom, left, top, right
+	public static int row[] = { 1, 0, -1, 0 };
+	public static int col[] = { 0, -1, 0, 1 };
+	
+	// Function to calculate the number of misplaced tiles
+	// ie. number of non-blank tiles not in their goal position
+	public static int calculateCost(int initialMat[][], int finalMat[][])
+	{
+		int count = 0;
+		for (int i = 0; i < N; i++)
+		for (int j = 0; j < N; j++)
+			if (initialMat[i][j]!=0 && initialMat[i][j] != finalMat[i][j])
+			count++;
+		return count;
+	}
+	
+	// Function to check if (x, y) is a valid matrix coordinate
+	public static int isSafe(int x, int y)
+	{
+		return (x >= 0 && x < N && y >= 0 && y < N)?1:0;
+	}
+	
+	// print path from root node to destination node
+	public static void printPath(Node root){
+		if(root == null){
+			return;
+		}
+		printPath(root.parent);
+		printMatrix(root.mat);
+		System.out.println("");
+	}
+	
+	// Comparison object to be used to order the heap
+	public static class comp implements Comparator<Node>{
+		@Override
+		public int compare(Node lhs, Node rhs){
+			return (lhs.cost + lhs.level) > (rhs.cost+rhs.level)?1:-1;
+		}
+	} 
+	
+	// Function to solve N*N - 1 puzzle algorithm using
+	// Branch and Bound. x and y are blank tile coordinates
+	// in initial state
+	public static void solve(int initialMat[][], int x, 
+							int y, int finalMat[][])
+	{
+	
+		// Create a priority queue to store live nodes of search tree
+		PriorityQueue<Node> pq = new PriorityQueue<>(new comp());
+		
+		// create a root node and calculate its cost
+		Node root = newNode(initialMat, x, y, x, y, 0, null);
+		root.cost = calculateCost(initialMat,finalMat);
+		
+		// Add root to list of live nodes;
+		pq.add(root);
+		
+		// Finds a live node with least cost,
+		// add its childrens to list of live nodes and
+		// finally deletes it from the list.
+		while(!pq.isEmpty())
+		{
+			Node min = pq.peek();// Find a live node with least estimated cost
+			pq.poll();// The found node is deleted from the list of live nodes
+			
+			// if min is an answer node
+			if(min.cost == 0){
+				printPath(min);// print the path from root to destination;
+				return;
+			}
+			// do for each child of min
+			// max 4 children for a node
+			for (int i = 0; i < 4; i++)
+			{
+				if (isSafe(min.x + row[i], min.y + col[i])>0)
+				{
+					// create a child node and calculate
+					// its cost
+					Node child = newNode(min.mat, min.x, min.y, min.x + row[i],min.y + col[i], min.level + 1, min);
+					child.cost = calculateCost(child.mat, finalMat);
+	
+					// Add child to list of live nodes
+					pq.add(child);
+				}
+			}
+		}
+	}
+	
+	//Driver Code
+	public static void main (String[] args)
+	{
+	
+		// Initial configuration
+		// Value 0 is used for empty space
+		int initialMat[][] =
+		{
+			{1, 2, 3},
+			{5, 6, 0},
+			{7, 8, 4}
+		};
+	
+		// Solvable Final configuration
+		// Value 0 is used for empty space
+		int finalMat[][] =
+		{
+			{1, 2, 3},
+			{5, 8, 6},
+			{0, 7, 4}
+		};
+	
+		// Blank tile coordinates in initial
+		// configuration
+		int x = 1, y = 2;
+	
+		solve(initialMat, x, y, finalMat);
+	}
+}
+
+
+
+
