@@ -27,7 +27,7 @@ public class KnapsackBranchAndBound {
     static Comparator<Item> itemComparator = (a, b) -> {
         double ratio1 = (double) a.value / a.weight;
         double ratio2 = (double) b.value / b.weight;
-        // Sorting in decreasing order of value per unit weight
+        
         return Double.compare(ratio2, ratio1);
     };
 

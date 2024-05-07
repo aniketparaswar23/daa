@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 class MergeSort {
     public static void merge(int arr[], int si, int mid, int ei) {
         int temp[] = new int[ei - si + 1];
@@ -71,17 +73,26 @@ class MergeSort {
     }
 
     public static void main(String[] args) {
-        long startTime = System.currentTimeMillis(); // Record start time
+        long startTime = System.currentTimeMillis(); // Record start time2
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Enter the Number of elments");
 
-        int arr1[] = {90, 10, 30, 60, 50, 40, 100, 70, 20, 80};
-        int n = 10;
+        int n=sc.nextInt();
+        int arr[]=new int[n];
+        System.out.println("Enter the " + n + "Numbers");
+        for(int i=0; i<n; i++)
+        {
+            arr[i]=sc.nextInt();
+        }
+       
+        
 
         System.out.println("\nMerge Sort");
         System.out.print("before - ");
-        printArr(arr1);
-        mergesort(arr1, 0, n - 1);
+        printArr(arr);
+        mergesort(arr, 0, n - 1);
         System.out.print("after -  ");
-        printArr(arr1);
+        printArr(arr);
 
         long endTime = System.currentTimeMillis(); // Record end time
         long executionTime = endTime - startTime; // Calculate execution time

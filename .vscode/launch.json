@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "TowerOfHanoi",
+      "request": "launch",
+      "mainClass": "TowerOfHanoi",
+      "projectName": "daa_ca89d34"
+    },
+    {
+      "type": "java",
+      "name": "Graph",
+      "request": "launch",
+      "mainClass": "Graph",
+      "projectName": "daa_ca89d34"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "c:/Users/Mayur/Downloads/daa",
+      "program": "c:/Users/Mayur/Downloads/daa/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

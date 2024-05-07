@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class QuickSort {
 
     public static void quickSort(int[] arr, int lb, int ub) {
@@ -41,8 +43,10 @@ public class QuickSort {
 
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis(); // Record start time
-        int arr[] = {732, 510, 287, 655, 168, 788, 961, 311, 465, 899, 721, 148, 857, 625, 26, 228, 829, 331, 237, 755};
-        int n = arr.length;
+        Scanner sc=new Scanner(System.in);
+        
+        
+
         printArr(arr);
         quickSort(arr, 0, n-1);
         printArr(arr);
